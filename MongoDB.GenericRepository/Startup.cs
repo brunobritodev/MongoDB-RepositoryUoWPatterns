@@ -61,7 +61,7 @@ namespace MongoDB.GenericRepository
             });
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Dapper Examples API v1.0");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Repository Pattern and Unit of Work API v1.0");
             });
         }
 

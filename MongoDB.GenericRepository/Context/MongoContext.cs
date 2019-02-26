@@ -28,9 +28,9 @@ namespace MongoDB.GenericRepository.Context
             RegisterConventions();
 
             // Configure mongo (You can inject the config, just to simplify)
-            var mongoClient = new MongoClient(Environment.GetEnvironmentVariable("MongoConnection") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value);
+            var mongoClient = new MongoClient(Environment.GetEnvironmentVariable("MONGOCONNECTION") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value);
             
-            Database = mongoClient.GetDatabase(Environment.GetEnvironmentVariable("DatabaseName") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value);
+            Database = mongoClient.GetDatabase(Environment.GetEnvironmentVariable("DATABASENAME") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value);
             
         }
 
