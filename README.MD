@@ -1,5 +1,5 @@
 # ASP.NET Core - MongoDB Repository & Unit of Work Pattern
-<img src="https://brunobrito.ghost.io/content/images/2018/08/capa-redes-20.jpg" width="480" />
+<img src="https://www.brunobrito.net.br/content/images/2019/02/capa-social.jpg" width="480" />
 
 Example App - This demo shows how to simple implement repository and unit of work patterns for MongoDB .Net driver.
 
