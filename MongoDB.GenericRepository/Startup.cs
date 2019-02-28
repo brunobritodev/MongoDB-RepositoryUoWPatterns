@@ -67,7 +67,7 @@ namespace MongoDB.GenericRepository
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<IMongoContext, MongoContext>();
+            services.AddScoped<IMongoContext, MongoContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductRepository, ProductRepository>();
         }

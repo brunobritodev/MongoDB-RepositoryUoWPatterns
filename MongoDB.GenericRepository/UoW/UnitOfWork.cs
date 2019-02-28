@@ -1,4 +1,5 @@
-﻿using MongoDB.GenericRepository.Interfaces;
+﻿using System.Threading.Tasks;
+using MongoDB.GenericRepository.Interfaces;
 
 namespace MongoDB.GenericRepository.UoW
 {
@@ -11,9 +12,11 @@ namespace MongoDB.GenericRepository.UoW
             _context = context;
         }
 
-        public bool Commit()
+        public async Task<bool> Commit()
         {
-            return _context.SaveChanges() > 0;
+            var changeAmount = await _context.SaveChanges();
+
+            return changeAmount > 0;
         }
 
         public void Dispose()

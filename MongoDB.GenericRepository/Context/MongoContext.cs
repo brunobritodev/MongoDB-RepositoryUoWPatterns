@@ -2,11 +2,12 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MongoDB.GenericRepository.Interfaces;
 using MongoDB.GenericRepository.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MongoDB.GenericRepository.Context
 {
@@ -44,16 +45,13 @@ namespace MongoDB.GenericRepository.Context
             ConventionRegistry.Register("My Solution Conventions", pack, t => true);
         }
 
-        public int SaveChanges()
+        public async Task<int> SaveChanges()
         {
-            var qtd = _commands.Count;
-            foreach (var command in _commands)
-            {
-                command();
-            }
+            var commandTasks = _commands.Select(c => c());
 
-            _commands.Clear();
-            return qtd;
+            await Task.WhenAll(commandTasks);
+
+            return _commands.Count;
         }
 
         public IMongoCollection<T> GetCollection<T>(string name)
@@ -66,10 +64,9 @@ namespace MongoDB.GenericRepository.Context
             GC.SuppressFinalize(this);
         }
 
-        public Task AddCommand(Func<Task> func)
+        public void AddCommand(Func<Task> func)
         {
             _commands.Add(func);
-            return Task.CompletedTask;
         }
     }
 }

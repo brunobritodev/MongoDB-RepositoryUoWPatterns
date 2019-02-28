@@ -6,8 +6,8 @@ namespace MongoDB.GenericRepository.Interfaces
 {
     public interface IMongoContext : IDisposable
     {
-        Task AddCommand(Func<Task> func);
-        int SaveChanges();
+        void AddCommand(Func<Task> func);
+        Task<int> SaveChanges();
         IMongoCollection<T> GetCollection<T>(string name);
     }
 }
