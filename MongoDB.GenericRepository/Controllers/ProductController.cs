@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using MongoDB.GenericRepository.Interfaces;
 using MongoDB.GenericRepository.Model;
 using MongoDB.GenericRepository.ViewModel;
@@ -37,10 +36,11 @@ namespace MongoDB.GenericRepository.Controllers
         }
 
         [HttpPost, Route("PostSimulatingError")]
-        public async Task<ActionResult> PostSimulatingError([FromBody] ProductViewModel value)
+        public IActionResult PostSimulatingError([FromBody] ProductViewModel value)
         {
             var product = new Product(value.Description);
-            await _productRepository.Add(product);
+            _productRepository.Add(product);
+
             // The product will not be added
             return BadRequest();
         }
@@ -49,13 +49,14 @@ namespace MongoDB.GenericRepository.Controllers
         public async Task<ActionResult<Product>> Post([FromBody] ProductViewModel value)
         {
             var product = new Product(value.Description);
-            await _productRepository.Add(product);
+            _productRepository.Add(product);
 
             // it will be null
             var testProduct = await _productRepository.GetById(product.Id);
 
             // If everything is ok then:
-            _uow.Commit();
+            await _uow.Commit();
+
             // The product will be added only after commit
             testProduct = await _productRepository.GetById(product.Id);
 
@@ -66,9 +67,10 @@ namespace MongoDB.GenericRepository.Controllers
         public async Task<ActionResult<Product>> Put(Guid id, [FromBody] ProductViewModel value)
         {
             var product = new Product(id, value.Description);
-            await _productRepository.Update(product);
 
-            _uow.Commit();
+            _productRepository.Update(product);
+
+            await _uow.Commit();
 
             return Ok(await _productRepository.GetById(id));
         }
@@ -76,13 +78,14 @@ namespace MongoDB.GenericRepository.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await _productRepository.Remove(id);
+            _productRepository.Remove(id);
 
             // it won't be null
             var testProduct = await _productRepository.GetById(id);
 
             // If everything is ok then:
-            _uow.Commit();
+            await _uow.Commit();
+
             // not it must by null
             testProduct = await _productRepository.GetById(id);
 

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace MongoDB.GenericRepository.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        bool Commit();
+        Task<bool> Commit();
     }
 }
