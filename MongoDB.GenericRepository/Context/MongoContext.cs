@@ -17,9 +17,6 @@ namespace MongoDB.GenericRepository.Context
         private readonly List<Func<Task>> _commands;
         public MongoContext(IConfiguration configuration)
         {
-            // Configure the persistence in another layer
-            MongoDbPersistence.Configure();
-
             // Set Guid to CSharp style (with dash -)
             BsonDefaults.GuidRepresentation = GuidRepresentation.CSharpLegacy;
 

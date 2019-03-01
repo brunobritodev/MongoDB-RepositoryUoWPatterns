@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.GenericRepository.Context;
 using MongoDB.GenericRepository.Interfaces;
+using MongoDB.GenericRepository.Persistence;
 using MongoDB.GenericRepository.Repository;
 using MongoDB.GenericRepository.UoW;
 using Swashbuckle.AspNetCore.Swagger;
@@ -24,7 +25,8 @@ namespace MongoDB.GenericRepository
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            // Configure the persistence in another layer
+            MongoDbPersistence.Configure();
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new Info
