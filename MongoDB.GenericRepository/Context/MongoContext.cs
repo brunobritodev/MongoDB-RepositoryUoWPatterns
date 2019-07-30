@@ -3,10 +3,10 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.GenericRepository.Interfaces;
-using MongoDB.GenericRepository.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDB.GenericRepository.Context
@@ -14,6 +14,7 @@ namespace MongoDB.GenericRepository.Context
     public class MongoContext : IMongoContext
     {
         private IMongoDatabase Database { get; set; }
+        public MongoClient MongoClient { get; set; }
         private readonly List<Func<Task>> _commands;
         public MongoContext(IConfiguration configuration)
         {
@@ -26,11 +27,14 @@ namespace MongoDB.GenericRepository.Context
             RegisterConventions();
 
             // Configure mongo (You can inject the config, just to simplify)
-            var mongoClient = new MongoClient(Environment.GetEnvironmentVariable("MONGOCONNECTION") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value);
-            
-            Database = mongoClient.GetDatabase(Environment.GetEnvironmentVariable("DATABASENAME") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value);
-            
+            MongoClient = new MongoClient(Environment.GetEnvironmentVariable("MONGOCONNECTION") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value);
+
+            Database = MongoClient.GetDatabase(Environment.GetEnvironmentVariable("DATABASENAME") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value);
+
         }
+
+        public IClientSessionHandle Session { get; set; }
+
 
         private void RegisterConventions()
         {
@@ -44,9 +48,16 @@ namespace MongoDB.GenericRepository.Context
 
         public async Task<int> SaveChanges()
         {
-            var commandTasks = _commands.Select(c => c());
+            using (Session = await MongoClient.StartSessionAsync())
+            {
+                Session.StartTransaction();
 
-            await Task.WhenAll(commandTasks);
+                var commandTasks = _commands.Select(c => c());
+
+                await Task.WhenAll(commandTasks);
+
+                await Session.CommitTransactionAsync();
+            }
 
             return _commands.Count;
         }
@@ -58,6 +69,9 @@ namespace MongoDB.GenericRepository.Context
 
         public void Dispose()
         {
+            while (Session != null && Session.IsInTransaction)
+                Thread.Sleep(TimeSpan.FromMilliseconds(100));
+
             GC.SuppressFinalize(this);
         }
 
