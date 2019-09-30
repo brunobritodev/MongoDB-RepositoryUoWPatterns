@@ -69,9 +69,7 @@ namespace MongoDB.GenericRepository.Context
 
         public void Dispose()
         {
-            while (Session != null && Session.IsInTransaction)
-                Thread.Sleep(TimeSpan.FromMilliseconds(100));
-
+            Session.Dispose();
             GC.SuppressFinalize(this);
         }
 
