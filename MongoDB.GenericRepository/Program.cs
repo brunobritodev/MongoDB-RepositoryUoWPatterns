@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace MongoDB.GenericRepository
 {
@@ -12,6 +13,8 @@ namespace MongoDB.GenericRepository
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(builder =>
+                    builder.ClearProviders())
                 .UseStartup<Startup>();
     }
 }
