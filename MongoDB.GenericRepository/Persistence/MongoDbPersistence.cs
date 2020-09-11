@@ -9,8 +9,9 @@ namespace MongoDB.GenericRepository.Persistence
         {
             ProductMap.Configure();
 
-            // Set Guid to CSharp style (with dash -)
             BsonDefaults.GuidRepresentation = GuidRepresentation.CSharpLegacy;
+            //BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
+
             // Conventions
             var pack = new ConventionPack
                 {
