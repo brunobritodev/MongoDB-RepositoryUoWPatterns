@@ -20,11 +20,12 @@ namespace MongoDB.GenericRepository.Controllers
             _productRepository = productRepository;
             _uow = uow;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
             var products = await _productRepository.GetAll();
+
             return Ok(products);
         }
 
@@ -32,6 +33,7 @@ namespace MongoDB.GenericRepository.Controllers
         public async Task<ActionResult<Product>> Get(Guid id)
         {
             var product = await _productRepository.GetById(id);
+
             return Ok(product);
         }
 

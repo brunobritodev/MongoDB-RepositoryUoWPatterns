@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.GenericRepository.Interfaces;
 using System;
@@ -20,13 +19,10 @@ namespace MongoDB.GenericRepository.Context
         public MongoContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            
 
             // Every command will be stored and it'll be processed at SaveChanges
             _commands = new List<Func<Task>>();
         }
-
-        
 
         public async Task<int> SaveChanges()
         {
@@ -49,18 +45,20 @@ namespace MongoDB.GenericRepository.Context
         private void ConfigureMongo()
         {
             if (MongoClient != null)
+            {
                 return;
+            }
 
             // Configure mongo (You can inject the config, just to simplify)
             MongoClient = new MongoClient(_configuration["MongoSettings:Connection"]);
 
             Database = MongoClient.GetDatabase(_configuration["MongoSettings:DatabaseName"]);
-
         }
 
         public IMongoCollection<T> GetCollection<T>(string name)
         {
             ConfigureMongo();
+
             return Database.GetCollection<T>(name);
         }
 

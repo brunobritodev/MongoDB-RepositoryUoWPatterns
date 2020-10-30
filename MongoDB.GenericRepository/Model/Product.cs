@@ -16,7 +16,7 @@ namespace MongoDB.GenericRepository.Model
             Description = description;
         }
 
-        public Guid Id { get; set; }
-        public string Description { get; set; }
+        public Guid Id { get; private set; }
+        public string Description { get; private set; }
     }
 }

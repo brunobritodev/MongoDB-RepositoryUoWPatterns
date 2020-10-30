@@ -7,7 +7,7 @@ Example App - This demo shows how to simple implement repository and unit of wor
 
 Pre reqs
 
-* Net.Core 2.2
+* Net.Core 3.1
 
 Techs:
 
