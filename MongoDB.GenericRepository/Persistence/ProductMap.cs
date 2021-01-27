@@ -12,7 +12,7 @@ namespace MongoDB.GenericRepository.Persistence
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
                 map.MapIdMember(x => x.Id);
-                map.MapMember(x => x.Description).SetIsRequired(true);
+                map.MapMember(x => x.Description);
             });
         }
     }

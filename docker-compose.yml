@@ -15,8 +15,8 @@ services:
       depends_on:
           - mongodb-primary
       environment: 
-          MONGOCONNECTION: "mongodb://root:password123@mongodb-primary:27017"
-          DATABASENAME: "Products"
+          MONGOCONNECTION: "mongodb://localhost:27017"
+          DATABASENAME: "test"
           ASPNETCORE_ENVIRONMENT: "Development"
           ASPNETCORE_URLS: http://+:5005
   
@@ -31,7 +31,7 @@ services:
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
 
     # volumes:
-    #   - 'mongodb_master_data:/bitnami'
+    #   - /path/to/mongodb-persistence:/bitnami/mongodb
 
   mongodb-secondary:
     image: 'bitnami/mongodb:latest'

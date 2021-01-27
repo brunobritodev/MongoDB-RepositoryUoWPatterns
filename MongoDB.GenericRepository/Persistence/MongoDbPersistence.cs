@@ -5,6 +5,7 @@ namespace MongoDB.GenericRepository.Persistence
 {
     public static class MongoDbPersistence
     {
+        [System.Obsolete]
         public static void Configure()
         {
             ProductMap.Configure();
