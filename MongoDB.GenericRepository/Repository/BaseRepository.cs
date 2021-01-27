@@ -19,9 +19,9 @@ namespace MongoDB.GenericRepository.Repository
             DbSet = Context.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public virtual void Add(TEntity obj)
+        public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
-            Context.AddCommand(() => DbSet.InsertOneAsync(obj));
+            return await DbSet.Find(Builders<TEntity>.Filter.Empty).ToListAsync();
         }
 
         public virtual async Task<TEntity> GetById(Guid id)
@@ -30,10 +30,9 @@ namespace MongoDB.GenericRepository.Repository
             return data.SingleOrDefault();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual void Add(TEntity obj)
         {
-            var all = await DbSet.FindAsync(Builders<TEntity>.Filter.Empty);
-            return all.ToList();
+            Context.AddCommand(() => DbSet.InsertOneAsync(obj));
         }
 
         public virtual void Update(TEntity obj)

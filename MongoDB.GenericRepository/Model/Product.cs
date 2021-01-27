@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace MongoDB.GenericRepository.Model
 {
@@ -16,7 +18,9 @@ namespace MongoDB.GenericRepository.Model
             Description = description;
         }
 
+        [BsonId]
         public Guid Id { get; private set; }
+
         public string Description { get; private set; }
     }
 }

@@ -11,6 +11,7 @@ using MongoDB.GenericRepository.Persistence;
 using MongoDB.GenericRepository.Repository;
 using MongoDB.GenericRepository.UoW;
 using System;
+using System.IO;
 
 namespace MongoDB.GenericRepository
 {
@@ -24,6 +25,7 @@ namespace MongoDB.GenericRepository
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
@@ -48,15 +50,16 @@ namespace MongoDB.GenericRepository
                     Description = "Swagger surface",
                     Contact = new OpenApiContact
                     {
-                        Name = "Bruno Brito",
-                        Email = "bhdebrito@gmail.com",
-                        Url = new Uri("http://www.brunobrito.net.br")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "MIT",
-                        Url = new Uri("https://github.com/brunohbrito/MongoDB-RepositoryUoWPatterns/blob/master/LICENSE")
+                        Name = "Nguyễn Ngọc Vinh",
+                        Email = "Nguyenngocvinh@cdktcnqn.edu.vn",
+                        Url = new Uri("http://cdktcnqn.edu.vn")
                     }
+                    //,
+                    //License = new OpenApiLicense
+                    //{
+                    //    Name = "MIT",
+                    //    Url = new Uri("https://github.com/brunohbrito/MongoDB-RepositoryUoWPatterns/blob/master/LICENSE")
+                    //}
                 });
             });
 
@@ -93,6 +96,7 @@ namespace MongoDB.GenericRepository
             app.UseSwaggerUI(s =>
             {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Repository Pattern and Unit of Work API v1.0");
+                
             });
         }
 
